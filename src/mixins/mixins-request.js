@@ -8,7 +8,6 @@ export default {
     },
     methods: {
         doRequest(url, param, success, error, finish) {
-
             //追加默认参数
             let handleParam = (param) => {
                 if (!param) {
@@ -32,6 +31,9 @@ export default {
             };
 
             request.post(url, handleParam(param), success, handleError, finish);
+        },
+        doRequests(requests, success) {
+            return request.all(requests, success);
         }
     }
 };

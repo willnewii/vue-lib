@@ -2,17 +2,14 @@
  * Created by zhangweiwei on 2017/04/10.
  */
 
+import axios from 'axios';
 import axiosInstance from './axiosInstance';
 
 class Request {
 
-    constructor(page, axios) {
+    constructor(page, aInstance) {
         this.page = page;
-        this.axios = axios || axiosInstance;
-    }
-
-    static handleParam(param) {
-
+        this.axios = aInstance || axiosInstance;
     }
 
     getOption() {
@@ -27,6 +24,16 @@ class Request {
         return this._request(url, 'get', param, success, fail, finish);
     }
 
+    all(requests, success) {
+        let requestArray = [];
+        requests.forEach((item) => {
+            requestArray.push(this.post(item.url, item.data));
+        });
+        axios.all(requestArray).then(axios.spread((...args) => {
+            success && success(args);
+        }));
+    }
+
     _request(url, type, param, success, fail, finish) {
         if (!url) {
             console.log('链接为空');
@@ -37,8 +44,6 @@ class Request {
 
         this.getOption().method = type;
 
-        //处理基础请求参数
-        param = Request.handleParam(param);
         let request;
         switch (this.getOption().method) {
             case 'get':
