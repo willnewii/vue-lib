@@ -1,4 +1,4 @@
-import autoListView from 'src/components/AutoListView';
+import autoListView from './components/AutoListView';
 
 const install = function (Vue, mixins) {
     if (mixins) {
