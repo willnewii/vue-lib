@@ -16,10 +16,7 @@ axiosInstance.interceptors.response.use((response) => {
         if (result.ret === 200) {
             return result;
         } else {
-            return Promise.reject({
-                msg: '接口返回错误',
-                data: result.msg
-            });
+            return Promise.reject(result);
         }
     } else {
         //EventBus.$emit(Constants.EventBus.showToast, {message: '接口异常'});

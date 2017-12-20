@@ -28,7 +28,7 @@
 <script>
     import minixs_request from '../mixins/mixins-request';
 
-    const defaultStartPage = 1;
+    const defaultStartPage = 0;
 
     export default {
         name: 'AutoListView',
@@ -47,14 +47,19 @@
                 default: 3
             },
             //可以绑定页面的刷新值.比如tabIindex,type等值.当该值发生改变,listview将执行刷新.
-            //notify 为空,默认不发起请求
+            //flag 为空,默认不发起请求
             flag: {
                 type: [Number, String],
-                default: true
+                default: 0
             },
             isNeedLoadMore: {
                 type: Boolean,
                 default: true
+            },
+            //宽高比
+            aspectRatio: {
+                type: Number,
+                default: 1 / 1
             },
             isNeedDivider: {
                 type: Boolean,
@@ -97,15 +102,15 @@
         },
         computed: {
             gridstyle() {
-                let width = this.$el.childNodes[0].offsetWidth / cols;
+                let width = this.$el.childNodes[0].offsetWidth / this.cols;
                 return {
                     width: width + 'px',
-                    height: width + 'px',
+                    height: width / this.aspectRatio + 'px',
                 };
             }
         },
         created() {
-            if (this.flag) {
+            if (this.flag !== null) {
                 this.getdata();
             }
         },
