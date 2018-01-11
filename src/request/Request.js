@@ -2,14 +2,27 @@
  * Created by zhangweiwei on 2017/04/10.
  */
 
+import * as index from '../index';
 import axios from 'axios';
 import axiosInstance from './axiosInstance';
 
+/**
+ * 根据配置初始化
+ * axiosInstance,优先级最高
+ * 还有的场景,不需要重置axiosInstance,但是需要配置axiosOption
+ */
 class Request {
 
-    constructor(page, aInstance) {
+    constructor(page) {
         this.page = page;
-        this.axios = aInstance || axiosInstance;
+
+        let lib = page['$' + index.name];
+        if (lib.axiosInstance) {
+            this.axios = lib.axiosInstance;
+        } else {
+            this.axios = axiosInstance;
+            lib.axiosOption && (this.axios.defaults = Object.assign(this.axios.defaults, lib.axiosOption));
+        }
     }
 
     getOption() {
@@ -39,7 +52,6 @@ class Request {
             console.log('链接为空');
             return;
         }
-
         url = url.indexOf('http') === 0 ? url : this.getOption().baseURL + '?' + url;
 
         this.getOption().method = type;

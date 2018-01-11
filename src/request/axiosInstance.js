@@ -7,6 +7,7 @@ const axiosInstance = axios.create(axiosOption);
  * 这里会按照约定好的api格式做简单的校验.可以根据需要配置
  */
 axiosInstance.interceptors.response.use((response) => {
+    console.log('axiosInstance-defaults');
     let result = response.data;
 
     if (typeof result === 'string') {
