@@ -7,8 +7,10 @@ export default {
         request = new Request(this);
     },
     methods: {
+        doRequestJsonP(url, param, success, error, finish) {
+            request.jsonp(url, this.handleParam(param), success, this.handleError, finish);
+        },
         doRequest(url, param, success, error, finish) {
-
             request.post(url, this.handleParam(param), success, this.handleError, finish);
         },
         doRequests(requests, success) {

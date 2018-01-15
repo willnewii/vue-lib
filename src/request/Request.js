@@ -4,6 +4,7 @@
 
 import * as index from '../index';
 import axios from 'axios';
+import jsonpAdapter from 'axios-jsonp';
 import axiosInstance from './axiosInstance';
 
 /**
@@ -27,6 +28,10 @@ class Request {
 
     getOption() {
         return this.axios.defaults;
+    }
+
+    jsonp(url, param, success, fail, finish) {
+        return this._request(url, 'jsonp', param, success, fail, finish);
     }
 
     post(url, param, success, fail, finish) {
@@ -60,6 +65,11 @@ class Request {
         switch (this.getOption().method) {
             case 'get':
                 this.getOption().params = param;
+                request = this.axios.get(url);
+                break;
+            case 'jsonp':
+                this.getOption().params = param;
+                this.getOption().adapter = jsonpAdapter;
                 request = this.axios.get(url);
                 break;
             default:
