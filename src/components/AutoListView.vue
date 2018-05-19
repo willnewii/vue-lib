@@ -1,5 +1,6 @@
 <template>
     <div class="scroll-view">
+        <slot name="header"></slot>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
                 <mu-list-item @click="onItemClick(index)">
@@ -28,8 +29,6 @@
 <script>
     import minixs_request from '../mixins/mixins-request';
 
-    const defaultStartPage = 0;
-
     export default {
         name: 'AutoListView',
         mixins: [minixs_request],
@@ -56,7 +55,7 @@
                 type: Boolean,
                 default: true
             },
-            //宽高比
+            //宽高比，grid 中使用
             aspectRatio: {
                 type: Number,
                 default: 1 / 1
@@ -68,13 +67,28 @@
             emptyMsg: {
                 type: String,
                 default: '没有数据'
+            },
+            pageOption: {
+                type: Object,
+                default() {
+                    return {
+                        startPage: {
+                            name: 'page',
+                            value: 2
+                        },
+                        pageSize: {
+                            name: 'pageSize',
+                            value: 10
+                        }
+                    };
+                }
             }
         },
         data() {
             return {
                 scroller: null,
                 scrollTop: 0,
-                page: defaultStartPage,
+                page: this.pageOption.startPage.value,
                 loading: false,
                 isMore: true,
                 data: []
@@ -120,7 +134,7 @@
             },
             init() {
                 this.isMore = true;
-                this.page = defaultStartPage;
+                this.page = this.pageParam.startPage.value;
                 this.data = [];
             },
             refresh() {
@@ -130,9 +144,10 @@
             getdata() {
                 this.loading = true;
 
-                let param = {
-                    page: this.page
-                };
+                let param = {};
+                param[this.pageOption.startPage.name] = this.page;
+                param[this.pageOption.pageSize.name] = this.pageOption.pageSize.value;
+
                 if (this.$parent.handleParam) {
                     param = Object.assign(this.$parent.handleParam(), param);
                 }
