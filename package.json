@@ -1,6 +1,6 @@
 {
   "name": "vue-lib",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "request & listview",
   "main": "src/index.js",
   "scripts": {
