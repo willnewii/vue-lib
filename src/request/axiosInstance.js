@@ -3,6 +3,19 @@ import axiosOption from './axiosOption';
 
 const axiosInstance = axios.create(axiosOption);
 
+axiosInstance.interceptors.request.use(function (config) {
+
+    let key = config.method !== 'get' ? 'data' : 'params';
+    config[key].app_env = process.env.NODE_ENV;
+    config[key].app_version = process.env.APP_VERSION;
+    config[key].app_model = navigator.userAgent;
+
+    return config;
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+});
+
 /**
  * 这里会按照约定好的api格式做简单的校验.可以根据需要配置
  */

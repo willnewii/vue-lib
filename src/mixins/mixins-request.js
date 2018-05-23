@@ -8,24 +8,18 @@ export default {
     },
     methods: {
         doRequestJsonP(url, param, success, error, finish) {
-            request.jsonp(url, this.handleParam(param), success, this.handleError, finish);
+            request.jsonp(url, param, success, this.handleError, finish);
+        },
+        doRequestPost(url, param, success, error, finish) {
+            request.post(url, param, success, this.handleError, finish);
         },
         doRequest(url, param, success, error, finish) {
-            request.post(url, this.handleParam(param), success, this.handleError, finish);
+            request.get(url, param, success, this.handleError, finish);
         },
         doRequests(requests, success) {
             return request.all(requests, success);
         },
-        handleParam(param) {
-            if (!param) {
-                param = {};
-            }
 
-            param.app_env = process.env.NODE_ENV;
-            param.app_version = process.env.APP_VERSION;
-            param.app_model = navigator.userAgent;
-            return param;
-        },
         handleError(error) {
             console.log('request_error:', error);
             if (error && 'msg' in error) { //接口错误

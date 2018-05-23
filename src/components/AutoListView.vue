@@ -8,7 +8,7 @@
                         <slot name="item" :item="item" :index="index"></slot>
                     </div>
                 </mu-list-item>
-                <mu-divider v-if="isNeedDivider"/>
+                <mu-divider v-if="isNeedDivider && data.length-1 != index"/>
             </template>
         </mu-list>
         <div class="grid" v-else-if="type == 'grid'">
@@ -82,6 +82,10 @@
                         }
                     };
                 }
+            },
+            disableRipple: {
+                type: Boolean,
+                default: true
             }
         },
         data() {
@@ -116,10 +120,11 @@
         },
         computed: {
             gridstyle() {
-                let width = this.$el.childNodes[0].offsetWidth / this.cols;
+                let style = getComputedStyle(this.$el);
+                let width = (this.$el.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)) / this.cols;
                 return {
                     width: width + 'px',
-                    height: width / this.aspectRatio + 'px',
+                    height: this.aspectRatio < 0 ? 'auto' : width / this.aspectRatio + 'px',
                 };
             }
         },
@@ -134,7 +139,7 @@
             },
             init() {
                 this.isMore = true;
-                this.page = this.pageParam.startPage.value;
+                this.page = this.pageOption.startPage.value;
                 this.data = [];
             },
             refresh() {
