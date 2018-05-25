@@ -8,25 +8,22 @@ export default {
     },
     methods: {
         doRequestJsonP(url, param, success, error, finish) {
-            request.jsonp(url, param, success, this.handleError, finish);
+            request.jsonp(url, this.handleParams(param), success, error || this.handleError, finish);
         },
         doRequestPost(url, param, success, error, finish) {
-            request.post(url, param, success, this.handleError, finish);
+            request.post(url, this.handleParams(param), success, error || this.handleError, finish);
         },
         doRequest(url, param, success, error, finish) {
-            request.get(url, param, success, this.handleError, finish);
+            request.get(url, this.handleParams(param), success, error || this.handleError, finish);
         },
         doRequests(requests, success) {
             return request.all(requests, success);
         },
-
+        handleParams(param){//如果需要传递前置参数,但又跟Vue环境相关,可重写该方法
+            return param;
+        },
         handleError(error) {
-            console.log('request_error:', error);
-            if (error && 'msg' in error) { //接口错误
-                console.error('接口异常', error.data.msg);
-            } else {
-                console.error('请求异常', error);
-            }
+            console.log('接口异常:', error);
         }
     }
 };
