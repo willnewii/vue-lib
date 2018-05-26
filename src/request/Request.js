@@ -62,6 +62,8 @@ class Request {
         this.getOption().method = type;
 
         let request;
+        this.getOption().params = null;
+        this.getOption().data = null;
         switch (this.getOption().method) {
             case 'get':
                 this.getOption().params = param;
