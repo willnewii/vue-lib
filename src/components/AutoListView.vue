@@ -3,7 +3,7 @@
         <slot name="header"></slot>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
-                <mu-list-item @click="onItemClick(index)">
+                <mu-list-item @click="onItemClick(index)" :disableRipple="disableRipple">
                     <div class="item">
                         <slot name="item" :item="item" :index="index"></slot>
                     </div>
@@ -85,7 +85,7 @@
             },
             disableRipple: {
                 type: Boolean,
-                default: true
+                default: false
             }
         },
         data() {
@@ -100,6 +100,7 @@
         },
         watch: {
             flag: function (val, oldVal) {
+                console.log(val, oldVal);
                 if (val) {
                     this.refresh();
                 } else {
@@ -112,6 +113,7 @@
             this.scroller.onscroll = () => {
                 this.scrollTop = this.scroller.scrollTop;
             };
+            this.$emit('onMounted');
         },
         activated() {
             if (this.scrollTop !== 0) {
@@ -172,7 +174,9 @@
                     if (!this.isNeedLoadMore) {
                         this.isMore = false;
                     }
-                }, null, () => {
+                }, () => {
+                    this.isMore = false;
+                }, () => {
                     this.loading = false;
                 });
             },
