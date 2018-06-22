@@ -1,5 +1,6 @@
 <template>
     <div class="scroll-view">
+        <mu-refresh-control :refreshing="refreshing" :trigger="scroller" @refresh="refresh"/>
         <slot name="header"></slot>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
@@ -90,6 +91,7 @@
         },
         data() {
             return {
+                refreshing: false,
                 scroller: null,
                 scrollTop: 0,
                 page: this.pageOption.startPage.value,
@@ -145,6 +147,7 @@
                 this.data = [];
             },
             refresh() {
+                this.$emit('onRefresh');
                 this.init();
                 this.getdata();
             },
@@ -177,12 +180,13 @@
                 }, () => {
                     this.isMore = false;
                 }, () => {
+                    this.refreshing = false;
                     this.loading = false;
                 });
             },
             loadMore() {
                 this.getdata();
-            }
+            },
         }
     };
 </script>
