@@ -1,6 +1,6 @@
 <template>
     <div class="scroll-view">
-        <mu-refresh-control :refreshing="refreshing" :trigger="scroller" @refresh="refresh"/>
+        <!--<mu-refresh-control :refreshing="refreshing" :trigger="scroller" @refresh="refresh"/>-->
         <slot name="header"></slot>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
@@ -168,7 +168,7 @@
                     }
                     this.data = this.data.concat(result);
 
-                    if (result.length === 0) {
+                    if (result.length === 0 || result.length < this.pageOption.pageSize.value) {
                         this.isMore = false;
                     } else {
                         this.page = this.page + 1;
@@ -180,7 +180,7 @@
                 }, () => {
                     this.isMore = false;
                 }, () => {
-                    this.refreshing = false;
+                    // this.refreshing = false;
                     this.loading = false;
                 });
             },
