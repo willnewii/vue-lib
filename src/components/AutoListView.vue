@@ -5,9 +5,8 @@
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
                 <mu-list-item @click="onItemClick(index)" :disableRipple="disableRipple">
-                    <div class="item">
-                        <slot name="item" :item="item" :index="index"></slot>
-                    </div>
+                    <!--<div class="item"></div>-->
+                    <slot name="item" :item="item" :index="index"></slot>
                 </mu-list-item>
                 <mu-divider v-if="isNeedDivider && data.length-1 != index"/>
             </template>
