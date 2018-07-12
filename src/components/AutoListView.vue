@@ -19,7 +19,8 @@
             </div>
         </div>
         <div class="empty-view" v-if="data.length <= 0 && !loading">
-            <div class="empty-message">{{emptyMsg}}</div>
+            <slot v-if="customeEmptyView" name="empty-view" ></slot>
+            <div v-else class="empty-message">{{emptyMsg}}</div>
         </div>
         <mu-infinite-scroll v-if="isMore" :scroller="scroller" :loading="loading" @load="loadMore"
                             loadingText="数据加载中..."/>
@@ -63,6 +64,10 @@
             isNeedDivider: {
                 type: Boolean,
                 default: true
+            },
+            customeEmptyView: {
+                type: Boolean,
+                default: false
             },
             emptyMsg: {
                 type: String,
