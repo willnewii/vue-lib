@@ -18,12 +18,13 @@
                 </div>
             </div>
         </div>
-        <div class="empty-view" v-if="data.length <= 0 && !loading">
-            <slot v-if="customeEmptyView" name="empty-view" ></slot>
-            <div v-else class="empty-message">{{emptyMsg}}</div>
-        </div>
+        <slot name="footer"></slot>
         <mu-infinite-scroll v-if="isMore" :scroller="scroller" :loading="loading" @load="loadMore"
                             loadingText="数据加载中..."/>
+        <div class="empty-view" v-if="data.length <= 0 && !loading">
+            <slot v-if="customeEmptyView" name="empty-view"></slot>
+            <div v-else class="empty-message">{{emptyMsg}}</div>
+        </div>
     </div>
 </template>
 
@@ -106,7 +107,6 @@
         },
         watch: {
             flag: function (val, oldVal) {
-                console.log(val, oldVal);
                 if (val) {
                     this.refresh();
                 } else {
