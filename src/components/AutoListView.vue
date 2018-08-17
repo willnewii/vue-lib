@@ -107,7 +107,7 @@
         },
         watch: {
             flag: function (val, oldVal) {
-                if (val) {
+                if (val !== null) {
                     this.refresh();
                 } else {
                     this.init();
