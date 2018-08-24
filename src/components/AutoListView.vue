@@ -4,7 +4,7 @@
         <slot name="header"></slot>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
-                <mu-list-item @click="onItemClick(index)" :disableRipple="disableRipple">
+                <mu-list-item @click="onItemClick(index)" :button="true" :ripple="!disableRipple">
                     <!--<div class="item"></div>-->
                     <slot name="item" :item="item" :index="index"></slot>
                 </mu-list-item>
