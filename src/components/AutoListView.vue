@@ -19,7 +19,7 @@
             </div>
         </div>
         <slot name="footer"></slot>
-        <mu-infinite-scroll v-if="isMore" :scroller="scroller" :loading="loading" @load="loadMore"
+        <mu-infinite-scroll v-if="isMore && !update" :scroller="scroller" :loading="loading" @load="loadMore"
                             loadingText="数据加载中..."/>
         <div class="empty-view" v-if="data.length <= 0 && !loading">
             <slot v-if="customeEmptyView" name="empty-view"></slot>
@@ -97,6 +97,7 @@
         data() {
             return {
                 refreshing: false,
+                update: false,
                 scroller: null,
                 scrollTop: 0,
                 page: this.pageOption.startPage.value,
@@ -152,7 +153,10 @@
             },
             refresh() {
                 this.$emit('onRefresh');
-                this.init();
+                this.isMore = true;
+                this.page = this.pageOption.startPage.value;
+                //this.data = []; 刷新是采用不清空数据.获取数据后替换的规则
+                this.update = true;
                 this.getdata();
             },
             getdata() {
@@ -170,7 +174,12 @@
                     if ('handleResult' in this.$parent) {
                         result = this.$parent.handleResult(result);
                     }
-                    this.data = this.data.concat(result);
+                    if (this.update) {
+                        this.data = result;
+                        this.update = false;
+                    } else {
+                        this.data = this.data.concat(result);
+                    }
 
                     if (result.length === 0 || result.length < this.pageOption.pageSize.value) {
                         this.isMore = false;
