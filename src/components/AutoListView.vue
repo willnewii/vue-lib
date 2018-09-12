@@ -39,13 +39,9 @@
                 type: String,
                 default: ''
             },
-            type: {
+            type: {//列表类型
                 type: String,
                 default: 'list'//grid
-            },
-            cols: {
-                type: Number,
-                default: 3
             },
             //可以绑定页面的刷新值.比如tabIindex,type等值.当该值发生改变,listview将执行刷新.
             //flag 为空,默认不发起请求
@@ -53,16 +49,19 @@
                 type: [Number, String],
                 default: 0
             },
-            isNeedLoadMore: {
+            isNeedLoadMore: {//是否需要加载更多
                 type: Boolean,
                 default: true
             },
-            //宽高比，grid 中使用
-            aspectRatio: {
+            cols: {//显示列数当type = grid 时 使用
+                type: Number,
+                default: 3
+            },
+            aspectRatio: {//item的宽高比，当type = grid 时 使用
                 type: Number,
                 default: 1 / 1
             },
-            isNeedDivider: {
+            isNeedDivider: {//是否显示分割线
                 type: Boolean,
                 default: true
             },
@@ -70,11 +69,11 @@
                 type: Boolean,
                 default: false
             },
-            emptyMsg: {
+            emptyMsg: {//无数据时的提示文案
                 type: String,
                 default: '没有数据'
             },
-            pageOption: {
+            pageOption: {//分页参数和默认值
                 type: Object,
                 default() {
                     return {
@@ -89,21 +88,25 @@
                     };
                 }
             },
-            disableRipple: {
+            disableRipple: {//是否开启android 涟漪效果
+                type: Boolean,
+                default: false
+            },
+            isFreeze: {//是否冻结当前数组
                 type: Boolean,
                 default: false
             }
         },
         data() {
             return {
-                refreshing: false,
-                update: false,
-                scroller: null,
-                scrollTop: 0,
+                scroller: null,     //滑动容器
                 page: this.pageOption.startPage.value,
+                scrollTop: 0,
                 loading: false,
                 isMore: true,
-                data: []
+                data: [],
+                update: false,          //下拉刷新标记位 未使用
+                refreshing: false,      //下拉刷新标记位 未使用
             };
         },
         watch: {
@@ -174,12 +177,15 @@
                     if ('handleResult' in this.$parent) {
                         result = this.$parent.handleResult(result);
                     }
+
+                    let _data = [];
                     if (this.update) {
-                        this.data = result;
+                        _data = result;
                         this.update = false;
                     } else {
-                        this.data = this.data.concat(result);
+                        _data = this.data.concat(result);
                     }
+                    this.data = this.isFreeze ? Object.freeze(_data) : _data;
 
                     if (result.length === 0 || result.length < this.pageOption.pageSize.value) {
                         this.isMore = false;
