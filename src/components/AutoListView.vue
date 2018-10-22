@@ -4,7 +4,7 @@
         <slot name="header"></slot>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
-                <mu-list-item @click="onItemClick(index)" :button="true" :ripple="!disableRipple">
+                <mu-list-item @click="onItemClick(index,$event)" :button="true" :ripple="!disableRipple">
                     <!--<div class="item"></div>-->
                     <slot name="item" :item="item" :index="index"></slot>
                 </mu-list-item>
@@ -146,7 +146,7 @@
             }
         },
         methods: {
-            onItemClick(index) {
+            onItemClick(index, event) {
                 this.$emit('onItemClick', this.data[index], index);
             },
             init() {
