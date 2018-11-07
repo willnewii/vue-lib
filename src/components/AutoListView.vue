@@ -1,7 +1,9 @@
 <template>
     <div class="scroll-view">
         <!--<mu-refresh-control :refreshing="refreshing" :trigger="scroller" @refresh="refresh"/>-->
-        <slot name="header"></slot>
+        <div class="header">
+            <slot name="header"></slot>
+        </div>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
                 <mu-list-item @click="onItemClick(index,$event)" :button="true" :ripple="!disableRipple">

@@ -9,6 +9,10 @@
   -webkit-overflow-scrolling: touch;
   position: relative;
 
+  .header {
+    flex-shrink: 0;
+  }
+
   //list样式
   .mu-list {
     overflow: visible;
