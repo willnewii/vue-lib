@@ -1,6 +1,6 @@
 <template>
     <div class="mu-infinite-scroll">
-        <mu-circular-progress v-show="loading" :size="24"></mu-circular-progress>
+        <Spin></Spin>
         <span v-show="loading" class="mu-infinite-scroll-text">{{loadingText}}</span>
     </div>
 </template>

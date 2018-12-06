@@ -4,15 +4,15 @@
         <div class="header">
             <slot name="header"></slot>
         </div>
-        <mu-list v-if="type == 'list'">
+        <div v-if="type == 'list'">
             <template v-for="item, index in data">
-                <mu-list-item @click="onItemClick(index,$event)" :button="true" :ripple="!disableRipple">
+                <div @click="onItemClick(index,$event)" :button="true" :ripple="!disableRipple">
                     <!--<div class="item"></div>-->
                     <slot name="item" :item="item" :index="index"></slot>
-                </mu-list-item>
+                </div>
                 <mu-divider v-if="isNeedDivider && data.length-1 != index"/>
             </template>
-        </mu-list>
+        </div>
         <div class="grid" v-else-if="type == 'grid'">
             <div v-for="item, index in data" @click="onItemClick(index)" v-bind:style="gridstyle">
                 <div class="item">
