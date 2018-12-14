@@ -24,7 +24,7 @@
         <mu-infinite-scroll v-if="isMore && !update" :scroller="scroller" :loading="loading" @load="loadMore"
                             loadingText="数据加载中..."/>
         <div class="empty-view" v-if="data.length <= 0 && !loading">
-            <slot v-if="customeEmptyView" name="empty-view"></slot>
+            <slot v-if="$slots['empty-view']" name="empty-view"></slot>
             <div v-else class="empty-message">{{emptyMsg}}</div>
         </div>
     </div>
@@ -66,10 +66,6 @@
             isNeedDivider: {//是否显示分割线
                 type: Boolean,
                 default: true
-            },
-            customeEmptyView: {
-                type: Boolean,
-                default: false
             },
             emptyMsg: {//无数据时的提示文案
                 type: String,

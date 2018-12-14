@@ -8,9 +8,5 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^0.17.1",
-    "axios-jsonp": "^1.0.1",
-    "qs": "^6.5.1"
-  }
+  "dependencies": {}
 }
