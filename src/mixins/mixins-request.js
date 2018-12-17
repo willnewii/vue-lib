@@ -16,12 +16,15 @@ export default {
         doRequest() {
             this._doRequest('get', ...arguments);
         },
-        _doRequest(type = 'get', url, param, success, error = this.handleError, finish) {
+        _doRequest(type = 'get', url, param, success, error, finish) {
             this.requestStart();
-            request[type](url, param, success,
-                (error) => {
-                    this.handleError(error);
-                    error && error();
+            request[type](
+                url,
+                this.handleParams(param),
+                success,
+                (_error) => {
+                    this.handleError(_error);
+                    error && error(_error);
                 },
                 () => {
                     this.requestFinish(url);
@@ -41,7 +44,6 @@ export default {
 
         },
         requestFinish() {
-            console.log('finishCall');
         }
     }
 };
