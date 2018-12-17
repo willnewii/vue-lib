@@ -7,23 +7,41 @@ export default {
         request = new Request(this);
     },
     methods: {
-        doRequestJsonP(url, param, success, error, finish) {
-            request.jsonp(url, this.handleParams(param), success, error || this.handleError, finish);
+        doRequestJsonP() {
+            this._doRequest('jsonp', ...arguments);
         },
-        doRequestPost(url, param, success, error, finish) {
-            request.post(url, this.handleParams(param), success, error || this.handleError, finish);
+        doRequestPost() {
+            this._doRequest('post', ...arguments);
         },
-        doRequest(url, param, success, error, finish) {
-            request.get(url, this.handleParams(param), success, error || this.handleError, finish);
+        doRequest() {
+            this._doRequest('get', ...arguments);
+        },
+        _doRequest(type = 'get', url, param, success, error = this.handleError, finish) {
+            this.requestStart();
+            request[type](url, param, success,
+                (error) => {
+                    this.handleError(error);
+                    error && error();
+                },
+                () => {
+                    this.requestFinish(url);
+                    finish && finish();
+                });
         },
         doRequests(requests, success) {
             return request.all(requests, success);
         },
-        handleParams(param){//如果需要传递前置参数,但又跟Vue环境相关,可重写该方法
+        handleParams(param) {//如果需要传递前置参数,但又跟Vue环境相关,可重写该方法
             return param;
         },
         handleError(error) {
             console.log('接口异常:', error);
+        },
+        requestStart() {
+
+        },
+        requestFinish() {
+            console.log('finishCall');
         }
     }
 };
