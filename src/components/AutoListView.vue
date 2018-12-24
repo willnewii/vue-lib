@@ -2,7 +2,7 @@
     <div class="scroll-view">
         <!--<mu-refresh-control :refreshing="refreshing" :trigger="scroller" @refresh="refresh"/>-->
         <div class="header">
-            <slot name="header"></slot>
+            <slot name="header" :data="data"></slot>
         </div>
         <mu-list v-if="type == 'list'">
             <template v-for="item, index in data">
